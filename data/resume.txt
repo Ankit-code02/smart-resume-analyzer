@@ -1,0 +1,5 @@
+Skills:
+Python, Java, SQL, Machine Learning, Flask, Git
+
+Experience:
+Built projects using Python and ML.

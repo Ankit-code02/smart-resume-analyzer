@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Resume Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <p style="text-align:center; color:#000000; font-size:14px;">
+This tool provides AI-assisted insights and does not replace human hiring decisions.
+</p>
+    <h1 style="text-align: center;">Smart Resume Analyzer</h1>
+    
+<p class="subtitle" style="text-align: center;">
+    Analyze your resume against a job description
+</p>
+
+
+   <form method="post" enctype="multipart/form-data">
+
+    <div class="section">
+        <label>Upload Resume (PDF / DOCX / TXT)</label>
+        <input type="file" name="resume_file" required>
+    </div>
+
+    <div class="section">
+        <label>Job Description</label>
+        <textarea name="job_text" placeholder="Paste job description here..." required></textarea>
+    </div>
+
+    <button type="submit">Analyze Resume</button>
+</form>
+
+
+    {% if result %}
+    <div class="result">
+        <h2>Match Score</h2>
+        <h3>Profile Strength: {{ result.profile_level }}</h3>
+
+<div class="ai-box">
+    <h3>AI Insights</h3>
+    <ul>
+        {% for insight in result.insights %}
+            <li>{{ insight }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% if result.learning_links %}
+<div class="ai-box">
+    <h3>Recommended Learning Resources</h3>
+    <ul>
+        {% for item in result.learning_links %}
+            <li>
+                <strong>{{ item.skill | capitalize }}</strong> :
+                <a href="{{ item.link }}" target="_blank">Start learning</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+        <div class="progress">
+            <div class="progress-bar" style="width: {{ result.match_score }}%;">
+                {{ result.match_score }}%
+            </div>
+        </div>
+
+        <div class="skills">
+            <div>
+                <h3>Resume Skills</h3>
+                {% for skill in result.resume_skills %}
+                    <span class="tag">{{ skill }}</span>
+                {% endfor %}
+            </div>
+
+            <div>
+                <h3>Missing Skills</h3>
+                {% if result.missing_skills %}
+                    {% for skill in result.missing_skills %}
+                        <span class="tag missing">{{ skill }}</span>
+                    {% endfor %}
+                {% else %}
+                    <p class="good">No major skill gaps 🎉</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
