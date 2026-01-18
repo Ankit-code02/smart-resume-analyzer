@@ -1,35 +1,24 @@
-import spacy
+# utils/skill_extractor.py
 
-# Load spaCy model once
-nlp = spacy.load("en_core_web_sm")
-
-# Basic skill list (we will expand later)
-SKILL_KEYWORDS = [
-    "python", "java", "c++", "sql", "machine learning",
-    "data science", "flask", "django", "git", "api",
-    "html", "css", "javascript"
+SKILLS_DB = [
+    "python", "java", "c++", "javascript", "html", "css",
+    "sql", "git", "api", "flask", "django", "react",
+    "node", "mongodb", "machine learning", "data analysis"
 ]
 
-
 def extract_skills(text):
+    if not text:
+        return []
+
     text = text.lower()
+    found_skills = []
 
-    found = set()
-
-    for skill in SKILL_KEYWORDS:
+    for skill in SKILLS_DB:
         if skill in text:
-            found.add(skill)
+            found_skills.append(skill)
 
-    return list(found)
+    return list(set(found_skills))
 
 
-if __name__ == "__main__":
-    sample_text = """
-    I have experience in Python, Flask, Machine Learning and SQL.
-    I also used Git and worked with APIs.
-    """
-
-    print(extract_skills(sample_text))
-    
 def format_skills(skills):
-    return [skill.upper() if skill.isupper() else skill.capitalize() for skill in skills]
+    return [skill.title() for skill in skills]
