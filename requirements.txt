@@ -2,3 +2,4 @@ flask
 python-docx
 pdfminer.six
 scikit-learn
+spacy
